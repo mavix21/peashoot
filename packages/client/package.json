@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "sv check --fail-on-warnings && vite build",
+		"build": "npx sv check --fail-on-warnings && npx vite build",
 		"test": "vitest run --coverage && tsd",
 		"test:watch": "vitest watch",
 		"preview": "vite preview",

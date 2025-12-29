@@ -10,15 +10,18 @@
 			"types": "./dist/index.d.ts",
 			"node": "./dist/index.js",
 			"import": "./dist/index.js",
-			"default": "./dist/index.js",
-			"format": "prettier --write src tests"
+			"default": "./dist/index.js"
 		}
 	},
 	"scripts": {
-		"build": "tsc -P tsconfig.build.json",
-		"dev": "tsc -P tsconfig.build.json --watch --preserveWatchOutput"
+		"build": "npx tsc -P tsconfig.build.json",
+		"dev": "npx tsc -P tsconfig.build.json --watch --preserveWatchOutput",
+		"format": "prettier --write src tests"
 	},
 	"dependencies": {
 		"zod": "^3.25.46"
+	},
+	"devDependencies": {
+		"typescript": "^5.8.3"
 	}
 }
