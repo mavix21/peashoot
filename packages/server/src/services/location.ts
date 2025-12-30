@@ -5,6 +5,7 @@ import * as fs from 'fs'
 import { join } from 'path'
 import { JSONValue } from '../types/json'
 import { parse } from 'yaml'
+import { z } from 'zod/v4'
 
 const TEMPERATURE_DATA_FILE_PATH = join(
 	__dirname,
@@ -13,6 +14,25 @@ const TEMPERATURE_DATA_FILE_PATH = join(
 	'data',
 	'temperature-ranges.yml',
 )
+
+const LocationFileData = z.object({
+	locations: z.array(
+		z.object({
+			name: z.string(),
+			region: z.string(),
+			country: z.string(),
+			monthlyTemperatures: z.array(
+				z.object({
+					month: z.int(),
+					temperatureRange: z.object({
+						min: z.tuple([z.number(), z.string()]),
+						max: z.tuple([z.number(), z.string()]),
+					}),
+				}),
+			),
+		}),
+	),
+})
 
 export async function loadTemperatureData(logger: Logger) {
 	if (!fs.existsSync(TEMPERATURE_DATA_FILE_PATH)) {
@@ -25,7 +45,7 @@ export async function loadTemperatureData(logger: Logger) {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const parsedData = parse(dataString) as JSONValue
 
-		// TODO: Parse temperature data into some model
+		const fileData = LocationFileData.parse(parsedData)
 
 		return await Promise.resolve(null)
 	} catch (error) {
